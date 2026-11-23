@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Твой характер в квадратных метрах — тест</title>
+<meta name="description" content="10 вопросов, 7 жилищных психотипов, 2 минуты. Узнай, какая недвижимость подходит именно тебе.">
+<meta property="og:title" content="Твой характер в квадратных метрах">
+<meta property="og:description" content="Пройди тест и узнай свой жилищный психотип: от городского гедониста до землевладельца в душе.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ================= НАСТРОЙКИ (заполнить перед запуском) =================
+   BOT_USERNAME — имя Telegram-бота без @, например "lyubimova_bot".
+   WEBHOOK_URL  — адрес, куда уходит заявка (CRM / Salebot / Make / Google-таблица).
+   POLICY_URL   — ссылка на политику обработки персональных данных.
+   Пока пусто — форма работает в демо-режиме и ничего никуда не отправляет. */
+</style>
+<script>
+window.QUIZ_CONFIG = {
+  BOT_USERNAME: "",
+  WEBHOOK_URL: "",
+  POLICY_URL: "#"
+};
+</script>
+<style>
+:root{
+  --navy:#0f1f3d; --navy-2:#16294f; --navy-3:#1f3766;
+  --milk:#f7f2e9; --milk-2:#efe7d8; --paper:#fffdf8;
+  --graphite:#2b2f36; --muted:#6b6f78;
+  --gold:#c9a45c; --gold-2:#e4c98f; --gold-deep:#a8823a;
+  --line:rgba(15,31,61,.12);
+  --radius:22px;
+  --shadow:0 18px 50px -24px rgba(15,31,61,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:Manrope,system-ui,-apple-system,sans-serif;
+  background:var(--milk); color:var(--graphite);
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.serif{font-family:"Cormorant Garamond",Georgia,serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+
+/* ---------- шапка ---------- */
+header{position:sticky;top:0;z-index:20;background:rgba(15,31,61,.96);backdrop-filter:blur(8px);color:var(--milk)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em;font-size:15px}
+.brand-mark{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;font-family:"Cormorant Garamond",serif;font-size:19px;color:var(--gold-2);font-weight:700}
+.brand small{display:block;font-weight:500;font-size:11px;color:var(--gold-2);letter-spacing:.12em;text-transform:uppercase}
+.header-geo{font-size:12px;color:rgba(247,242,233,.7);letter-spacing:.06em;text-align:right}
+
+/* ---------- экраны ---------- */
+.screen{display:none;animation:fade .45s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- старт ---------- */
+.hero{background:radial-gradient(120% 90% at 80% 0%,var(--navy-3) 0%,var(--navy) 55%,#0a1630 100%);color:var(--milk);overflow:hidden;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding-top:56px;padding-bottom:64px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-2)}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+.hero h1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(44px,7vw,78px);line-height:.98;margin:18px 0 18px;letter-spacing:-.01em}
+.hero h1 em{color:var(--gold-2);font-style:italic}
+.hero p.lead{font-size:18px;color:rgba(247,242,233,.85);max-width:30em}
+.hero p.tease{margin-top:14px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--gold-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:17px 30px;border-radius:999px;font-weight:700;font-size:16px;letter-spacing:.02em;transition:transform .15s ease,box-shadow .2s ease,background .2s}
+.btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold) 55%,var(--gold-deep));color:var(--navy);box-shadow:0 12px 30px -10px rgba(201,164,92,.7)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 16px 36px -10px rgba(201,164,92,.85)}
+.btn-gold:active{transform:translateY(0)}
+.btn-ghost{border:1.5px solid var(--line);color:var(--navy);background:var(--paper)}
+.btn-ghost:hover{border-color:var(--gold)}
+.btn-navy{background:var(--navy);color:var(--milk)}
+.btn-navy:hover{background:var(--navy-2)}
+.hero .cta{margin-top:30px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.hero .cta span{font-size:13px;color:rgba(247,242,233,.6)}
+.hero-art{position:relative}
+.hero-art svg{width:100%;height:auto;display:block}
+.sticker{position:absolute;right:4%;top:2%;background:var(--milk);color:var(--navy);border-radius:50%;width:120px;height:120px;display:grid;place-items:center;text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:17px;line-height:1.1;transform:rotate(9deg);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);padding:12px;border:2px dashed var(--gold)}
+.facts{background:var(--paper);border-bottom:1px solid var(--line)}
+.facts .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:22px;padding-bottom:22px}
+.fact{display:flex;align-items:baseline;gap:8px;color:var(--muted);font-size:14px}
+.fact b{font-family:"Cormorant Garamond",serif;font-size:36px;color:var(--navy);font-weight:700;line-height:1}
+.types-strip{padding-top:56px;padding-bottom:72px}
+.types-strip h2{font-family:"Cormorant Garamond",serif;font-size:34px;color:var(--navy);font-weight:600;margin-bottom:6px}
+.types-strip p{color:var(--muted);margin-bottom:24px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:10px 16px;border-radius:999px;background:var(--paper);border:1px solid var(--line);font-weight:600;font-size:14px;color:var(--navy);display:flex;gap:8px;align-items:center}
+.chip i{font-style:normal;font-size:18px}
+.chip.hidden-type{color:var(--muted);border-style:dashed}
+
+/* ---------- вопрос ---------- */
+.quiz{padding-top:28px;padding-bottom:60px}
+.quiz-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.back{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--navy);background:var(--paper);flex:none}
+.back:hover{border-color:var(--gold)}
+.counter{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.counter strong{color:var(--navy)}
+.progress{height:6px;border-radius:99px;background:var(--milk-2);overflow:hidden;margin-bottom:30px}
+.progress div{height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold-2));border-radius:99px;transition:width .4s ease}
+.q-title{font-family:"Cormorant Garamond",serif;font-weight:600;color:var(--navy);font-size:clamp(32px,5vw,48px);line-height:1.05;margin-bottom:26px;max-width:18em}
+.answers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.answer{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:0;text-align:left;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease,border-color .18s,box-shadow .2s;box-shadow:0 1px 0 rgba(15,31,61,.04)}
+.answer:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--shadow)}
+.answer:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.answer .pic{aspect-ratio:1/1;display:grid;place-items:center;position:relative;font-size:clamp(54px,7vw,76px)}
+.answer .pic .em{filter:drop-shadow(0 8px 14px rgba(15,31,61,.25));transition:transform .25s ease}
+.answer:hover .pic .em{transform:scale(1.08) rotate(-4deg)}
+.answer .letter{position:absolute;left:14px;top:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,253,248,.92);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:15px}
+.answer .txt{padding:16px 18px 20px;font-weight:600;color:var(--graphite);font-size:15.5px;line-height:1.35}
+.answer.picked{border-color:var(--gold);transform:scale(.97)}
+.answer.picked .letter{background:var(--gold);color:var(--navy)}
+.bg-a{background:linear-gradient(150deg,#1f3766,#0f1f3d)}
+.bg-b{background:linear-gradient(150deg,#dfe6dc,#b9c9b4)}
+.bg-c{background:linear-gradient(150deg,#f3dcc0,#e3b98a)}
+.bg-d{background:linear-gradient(150deg,#d7e3c3,#9fbb7d)}
+.quiz-note{margin-top:26px;text-align:center;color:var(--muted);font-size:14px;font-style:italic}
+
+/* ---------- результат ---------- */
+.result{padding-top:40px;padding-bottom:70px}
+.result-card{background:var(--navy);color:var(--milk);border-radius:28px;overflow:hidden;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:var(--shadow)}
+.result-visual{background:radial-gradient(90% 80% at 50% 30%,var(--navy-3),var(--navy));display:grid;place-items:center;padding:36px;position:relative;min-height:340px}
+.result-visual .big{font-size:150px;filter:drop-shadow(0 20px 30px rgba(0,0,0,.4))}
+.result-visual .num{position:absolute;left:24px;top:22px;font-size:12px;letter-spacing:.18em;color:var(--gold-2);font-weight:700}
+.result-body{padding:40px 40px 36px}
+.result-body .intro{color:rgba(247,242,233,.7);font-size:14px;letter-spacing:.06em;margin:14px 0 4px}
+.result-body h1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(40px,5.5vw,58px);line-height:1;color:var(--gold-2)}
+.result-body .tag{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;line-height:1.25;margin:16px 0 22px}
+.result-body .portrait{color:rgba(247,242,233,.85);margin-bottom:22px}
+.formula{border-top:1px solid rgba(228,201,143,.25);padding-top:18px;display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:14px}
+.formula dt{color:var(--gold-2);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px;padding-top:2px}
+.formula dd{color:var(--milk)}
+.result-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.result-actions .btn-ghost{background:transparent;color:var(--milk);border-color:rgba(247,242,233,.3)}
+.result-actions .btn-ghost:hover{border-color:var(--gold-2)}
+.toast{margin-top:12px;font-size:13px;color:var(--gold-2);min-height:20px}
+.mini-note{margin-top:18px;font-size:12.5px;color:var(--muted);text-align:center}
+.recognize{margin-top:40px;text-align:center}
+.recognize h2{font-family:"Cormorant Garamond",serif;font-size:38px;color:var(--navy);font-weight:600}
+.recognize p{max-width:36em;margin:10px auto 22px;color:var(--graphite);font-size:17px}
+.recognize .geo{font-size:13px;color:var(--muted);letter-spacing:.06em;margin-top:14px}
+
+/* ---------- подарок ---------- */
+.gift{padding-top:40px;padding-bottom:70px}
+.gift-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.gift-cover{background:linear-gradient(160deg,var(--navy-3),var(--navy));border-radius:24px;color:var(--milk);padding:34px 30px;position:relative;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:3/4;display:flex;flex-direction:column}
+.gift-cover::after{content:"";position:absolute;inset:14px;border:1px solid rgba(228,201,143,.35);border-radius:16px;pointer-events:none}
+.gift-cover .series{font-size:11px;letter-spacing:.2em;color:var(--gold-2);font-weight:700}
+.gift-cover .gt{font-family:"Cormorant Garamond",serif;font-size:clamp(32px,4vw,44px);line-height:1.02;margin-top:auto;font-weight:600}
+.gift-cover .gs{font-size:14px;color:rgba(247,242,233,.75);margin-top:12px}
+.gift-cover .ge{font-size:96px;position:absolute;right:26px;top:44px;opacity:.95}
+.gift-cover .author{margin-top:22px;font-size:12px;letter-spacing:.08em;color:var(--gold-2)}
+.gift-text .eyebrow{color:var(--gold-deep)}
+.gift-text .eyebrow::before{background:var(--gold-deep)}
+.gift-text h2{font-family:"Cormorant Garamond",serif;font-size:clamp(34px,4.6vw,48px);line-height:1.02;color:var(--navy);margin:14px 0 14px;font-weight:600}
+.gift-text p{font-size:16.5px;margin-bottom:16px}
+.inside{list-style:none;margin:6px 0 22px;display:grid;gap:8px}
+.inside li{display:flex;gap:10px;align-items:flex-start;font-weight:600;color:var(--navy)}
+.inside li::before{content:"";flex:none;width:18px;height:18px;margin-top:3px;border-radius:50%;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%230f1f3d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+form{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;gap:12px}
+label.f{display:grid;gap:6px;font-size:13px;font-weight:700;color:var(--navy);letter-spacing:.02em}
+input[type=text],input[type=tel]{font:inherit;font-size:16px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:#fff;color:var(--graphite);outline:none;transition:border-color .2s}
+input:focus{border-color:var(--gold)}
+input.bad{border-color:#c0533f}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);line-height:1.4}
+.check input{margin-top:2px;width:18px;height:18px;accent-color:var(--navy);flex:none}
+.check a{color:var(--navy)}
+.err{color:#c0533f;font-size:13px;min-height:18px}
+.signature{margin-top:6px;font-size:13px;color:var(--muted);text-align:center}
+
+/* ---------- спасибо ---------- */
+.thanks{padding-top:60px;padding-bottom:80px;text-align:center}
+.thanks .big{font-size:84px}
+.thanks h2{font-family:"Cormorant Garamond",serif;font-size:clamp(36px,5vw,52px);color:var(--navy);font-weight:600;line-height:1.05;margin:14px 0}
+.thanks p{max-width:34em;margin:0 auto 24px;font-size:17px}
+.demo{max-width:34em;margin:20px auto 0;font-size:13px;color:#8a5a12;background:#fbefd6;border:1px dashed var(--gold);border-radius:14px;padding:12px 16px}
+
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12.5px;text-align:center}
+
+/* ---------- адаптив ---------- */
+@media (max-width:900px){
+  .answers{grid-template-columns:repeat(2,1fr)}
+  .result-card{grid-template-columns:1fr}
+  .result-visual{min-height:220px;padding:28px}
+  .result-visual .big{font-size:110px}
+  .gift-grid{grid-template-columns:1fr}
+  .gift-cover{aspect-ratio:auto;min-height:300px}
+}
+@media (max-width:760px){
+  .hero .wrap{grid-template-columns:1fr;padding-top:34px;padding-bottom:40px;gap:10px}
+  .hero-art{order:-1;max-width:420px;margin:0 auto;width:100%}
+  .sticker{width:96px;height:96px;font-size:14px;right:0}
+  .facts .wrap{grid-template-columns:repeat(2,1fr);row-gap:14px}
+  .header-geo{display:none}
+  .hero .btn{width:100%}
+}
+@media (max-width:520px){
+  .answers{gap:10px}
+  .answer .txt{padding:12px 12px 14px;font-size:14px}
+  .answer .letter{width:28px;height:28px;font-size:13px;left:10px;top:10px}
+  .result-body{padding:26px 20px 26px}
+  .result-actions .btn{width:100%}
+  .recognize .btn,.thanks .btn{width:100%}
+  .q-title{margin-bottom:18px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <button class="brand" id="homeBtn" aria-label="На стартовый экран">
+      <span class="brand-mark">Л</span>
+      <span>Любимова Недвижимость<small>Твой идеальный адрес</small></span>
+    </button>
+    <div class="header-geo">Ростов-на-Дону · Аксай · Батайск · пригород</div>
+  </div>
+</header>
+
+<main>
+<!-- ================= СТАРТ ================= -->
+<section class="screen active" id="s-start">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Несерьёзный тест. Серьёзно про жильё</div>
+        <h1>Твой характер<br>в&nbsp;<em>квадратных метрах</em></h1>
+        <p class="lead">Пройди тест и узнай, какая недвижимость подходит именно тебе.</p>
+        <p class="tease">Возможно, ты мечтаешь о квартире, а внутри тебя давно живёт домовладелец.</p>
+        <div class="cta">
+          <button class="btn btn-gold" id="startBtn">Начать тест →</button>
+          <span>Займёт пару минут. Обещаем без ипотечных калькуляторов.</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4c98f"/><stop offset="1" stop-color="#c9a45c"/></linearGradient>
+            <linearGradient id="tw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4579"/><stop offset="1" stop-color="#16294f"/></linearGradient>
+          </defs>
+          <circle cx="360" cy="90" r="46" fill="#e4c98f" opacity=".18"/>
+          <circle cx="360" cy="90" r="28" fill="#e4c98f" opacity=".35"/>
+          <!-- башни -->
+          <rect x="60" y="70" width="96" height="290" rx="4" fill="url(#tw)" stroke="#c9a45c" stroke-opacity=".5"/>
+          <rect x="170" y="130" width="74" height="230" rx="4" fill="url(#tw)" stroke="#c9a45c" stroke-opacity=".4"/>
+          <g fill="#e4c98f">
+            <rect x="74" y="88" width="14" height="10" rx="1" opacity=".9"/><rect x="100" y="88" width="14" height="10" rx="1" opacity=".3"/><rect x="126" y="88" width="14" height="10" rx="1" opacity=".8"/>
+            <rect x="74" y="112" width="14" height="10" rx="1" opacity=".3"/><rect x="100" y="112" width="14" height="10" rx="1" opacity=".9"/><rect x="126" y="112" width="14" height="10" rx="1" opacity=".3"/>
+            <rect x="74" y="136" width="14" height="10" rx="1" opacity=".8"/><rect x="100" y="136" width="14" height="10" rx="1" opacity=".3"/><rect x="126" y="136" width="14" height="10" rx="1" opacity=".9"/>
+            <rect x="74" y="160" width="14" height="10" rx="1" opacity=".3"/><rect x="100" y="160" width="14" height="10" rx="1" opacity=".8"/><rect x="126" y="160" width="14" height="10" rx="1" opacity=".3"/>
+            <rect x="74" y="184" width="14" height="10" rx="1" opacity=".9"/><rect x="100" y="184" width="14" height="10" rx="1" opacity=".9"/><rect x="126" y="184" width="14" height="10" rx="1" opacity=".3"/>
+            <rect x="74" y="208" width="14" height="10" rx="1" opacity=".3"/><rect x="100" y="208" width="14" height="10" rx="1" opacity=".3"/><rect x="126" y="208" width="14" height="10" rx="1" opacity=".8"/>
+            <rect x="74" y="232" width="14" height="10" rx="1" opacity=".8"/><rect x="100" y="232" width="14" height="10" rx="1" opacity=".3"/><rect x="126" y="232" width="14" height="10" rx="1" opacity=".9"/>
+            <rect x="74" y="256" width="14" height="10" rx="1" opacity=".3"/><rect x="100" y="256" width="14" height="10" rx="1" opacity=".9"/><rect x="126" y="256" width="14" height="10" rx="1" opacity=".3"/>
+            <rect x="184" y="148" width="12" height="9" rx="1" opacity=".3"/><rect x="206" y="148" width="12" height="9" rx="1" opacity=".9"/><rect x="226" y="148" width="10" height="9" rx="1" opacity=".3"/>
+            <rect x="184" y="170" width="12" height="9" rx="1" opacity=".9"/><rect x="206" y="170" width="12" height="9" rx="1" opacity=".3"/><rect x="226" y="170" width="10" height="9" rx="1" opacity=".8"/>
+            <rect x="184" y="192" width="12" height="9" rx="1" opacity=".3"/><rect x="206" y="192" width="12" height="9" rx="1" opacity=".8"/><rect x="226" y="192" width="10" height="9" rx="1" opacity=".3"/>
+            <rect x="184" y="214" width="12" height="9" rx="1" opacity=".8"/><rect x="206" y="214" width="12" height="9" rx="1" opacity=".3"/><rect x="226" y="214" width="10" height="9" rx="1" opacity=".9"/>
+            <rect x="184" y="236" width="12" height="9" rx="1" opacity=".3"/><rect x="206" y="236" width="12" height="9" rx="1" opacity=".9"/><rect x="226" y="236" width="10" height="9" rx="1" opacity=".3"/>
+          </g>
+          <!-- дом -->
+          <path d="M270 250 L350 192 L430 250 Z" fill="url(#gw)"/>
+          <rect x="284" y="248" width="132" height="112" fill="#f7f2e9"/>
+          <rect x="300" y="268" width="34" height="30" rx="2" fill="#16294f"/>
+          <rect x="366" y="268" width="34" height="30" rx="2" fill="#e4c98f"/>
+          <rect x="334" y="312" width="32" height="48" rx="2" fill="#a8823a"/>
+          <rect x="390" y="200" width="14" height="30" fill="#efe7d8"/>
+          <!-- дерево -->
+          <circle cx="448" cy="300" r="24" fill="#6f8f5a"/><rect x="445" y="318" width="6" height="42" fill="#4d3b22"/>
+          <!-- земля -->
+          <rect x="20" y="358" width="450" height="3" rx="1.5" fill="#c9a45c"/>
+          <path d="M270 361 h190" stroke="#6f8f5a" stroke-width="6" stroke-linecap="round" opacity=".6"/>
+          <text x="40" y="392" fill="#e4c98f" font-family="Manrope" font-size="11" letter-spacing="3" opacity=".7">КВАРТИРА · ТАУНХАУС · ДОМ · УЧАСТОК</text>
+        </svg>
+        <div class="sticker">Только честно. Риелтор всё&nbsp;равно узнает ;)</div>
+      </div>
+    </div>
+  </div>
+  <div class="facts">
+    <div class="wrap">
+      <div class="fact"><b>10</b> вопросов</div>
+      <div class="fact"><b>4</b> варианта на выбор</div>
+      <div class="fact"><b>7</b> жилищных психотипов</div>
+      <div class="fact"><b>~2</b> минуты на себя</div>
+    </div>
+  </div>
+  <div class="wrap types-strip">
+    <h2>Кто живёт внутри тебя?</h2>
+    <p>Семь психотипов. Один из них — твой. Остальных показывать не будем, чтобы не подсказывать.</p>
+    <div class="chips" id="typeChips"></div>
+  </div>
+</section>
+
+<!-- ================= ВОПРОСЫ ================= -->
+<section class="screen" id="s-quiz">
+  <div class="wrap quiz">
+    <div class="quiz-top">
+      <button class="back" id="backBtn" aria-label="Предыдущий вопрос">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="counter">Вопрос <strong id="qNum">1</strong> / 10</div>
+    </div>
+    <div class="progress" role="progressbar" aria-label="Прогресс теста"><div id="bar" style="width:0%"></div></div>
+    <h2 class="q-title" id="qTitle"></h2>
+    <div class="answers" id="answers"></div>
+    <p class="quiz-note">Здесь нет правильных ответов. Есть только твоя будущая прихожая.</p>
+  </div>
+</section>
+
+<!-- ================= РЕЗУЛЬТАТ ================= -->
+<section class="screen" id="s-result">
+  <div class="wrap result">
+    <div class="result-card">
+      <div class="result-visual">
+        <div class="num" id="rNum"></div>
+        <div class="big" id="rEmoji"></div>
+      </div>
+      <div class="result-body">
+        <div class="eyebrow">Кажется, мы тебя раскусили</div>
+        <p class="intro">Твой жилищный психотип</p>
+        <h1 id="rTitle"></h1>
+        <p class="tag" id="rTag"></p>
+        <p class="portrait" id="rPortrait"></p>
+        <dl class="formula" id="rFormula"></dl>
+        <div class="result-actions">
+          <button class="btn btn-gold" id="toGiftBtn">Забрать персональный гид →</button>
+          <button class="btn btn-ghost" id="shareBtn">Поделиться</button>
+        </div>
+        <div class="toast" id="toast"></div>
+      </div>
+    </div>
+    <p class="mini-note">Площади и класс жилья — ориентир по характеру. Бюджет и реальные варианты подбираем отдельно.</p>
+    <div class="recognize">
+      <h2>Ну что, узнал себя?</h2>
+      <p>А теперь самое интересное: давай узнаем, сколько стоит твоя идеальная недвижимость и где её можно найти.</p>
+      <button class="btn btn-navy" id="toGiftBtn2">Найти мою идеальную недвижимость</button>
+      <div class="geo">Подберём реальные варианты в Ростове-на-Дону, Аксае, Батайске и пригороде</div>
+      <p style="margin-top:22px"><button class="btn btn-ghost" id="againBtn">Пройти ещё раз</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ПОДАРОК + ФОРМА ================= -->
+<section class="screen" id="s-gift">
+  <div class="wrap gift">
+    <div class="gift-grid">
+      <div>
+        <div class="gift-cover">
+          <div class="series">ТВОЙ ИДЕАЛЬНЫЙ АДРЕС · <span id="gNum"></span></div>
+          <div class="ge" id="gEmoji"></div>
+          <div class="gt" id="gTitle"></div>
+          <div class="gs" id="gSub"></div>
+          <div class="author">СОФИЯ ЛЮБИМОВА · ПЕРСОНАЛЬНЫЙ ГИД · 8 СТРАНИЦ</div>
+        </div>
+      </div>
+      <div class="gift-text">
+        <div class="eyebrow">Твой персональный подарок</div>
+        <h2>С характером разобрались. Теперь главное — не&nbsp;купить что попало.</h2>
+        <p>Мы подготовили гид по недвижимости для психотипа «<b id="gType"></b>» — с учётом твоего характера и образа жизни.</p>
+        <ul class="inside">
+          <li>Какая недвижимость подходит именно тебе</li>
+          <li>За что действительно стоит платить</li>
+          <li>На чём можно сэкономить</li>
+          <li>Какие ошибки могут стоить тебе денег</li>
+          <li>Что проверить перед покупкой</li>
+        </ul>
+        <form id="leadForm" novalidate>
+          <label class="f">Твоё имя
+            <input type="text" id="fName" name="name" autocomplete="given-name" placeholder="Например, Анна" maxlength="60">
+          </label>
+          <label class="f">Номер телефона
+            <input type="tel" id="fPhone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" inputmode="tel">
+          </label>
+          <label class="check"><input type="checkbox" id="fConsent"> <span>Согласен(на) на обработку персональных данных для получения гида. <a id="policyLink" href="#" target="_blank" rel="noopener">Политика</a></span></label>
+          <label class="check"><input type="checkbox" id="fAds"> <span>Хочу получать полезные материалы и предложения. От рассылки можно отказаться в любой момент.</span></label>
+          <div class="err" id="fErr" role="alert"></div>
+          <button class="btn btn-gold" type="submit" id="submitBtn">Забрать мой персональный гид</button>
+          <div class="signature">Гид придёт в Telegram бесплатно · София Любимова · Любимова Недвижимость</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= СПАСИБО ================= -->
+<section class="screen" id="s-thanks">
+  <div class="wrap thanks">
+    <div class="big">🎁</div>
+    <h2><span id="tName"></span>, твой гид уже ждёт!</h2>
+    <p>Открой Telegram — бот сразу пришлёт гид «<b id="tGuide"></b>». Отвечать на вопросы заново не придётся.</p>
+    <a class="btn btn-gold" id="tgBtn" href="#" target="_blank" rel="noopener">Открыть гид в Telegram →</a>
+    <div class="demo" id="demoNote" hidden>Демо-режим: бот и CRM ещё не подключены. Впиши <b>BOT_USERNAME</b> и <b>WEBHOOK_URL</b> в начале файла — и заявка начнёт уходить по-настоящему.</div>
+  </div>
+</section>
+</main>
+
+<footer>София Любимова · Основатель агентства «Любимова Недвижимость» · Ростов-на-Дону · Аксай · Батайск · Пригород</footer>
+
+<script>
+(() => {
+/* ===== Психотипы =====
+   G — Городской гедонист, M — Практичный минималист, T — Амбассадор тишины,
+   S — Семейный стратег,  E — Эстет с запросами,   H — Сам себе хозяин,
+   Z — Землевладелец в душе */
+const TYPES = {
+  G:{n:1,title:"Городской гедонист",emoji:"🌆",chip:"🌆",
+     tag:"Тебе нужен город под окнами, а не картошка под окном.",
+     portrait:"Любимый ресторан, спортзал и кофейня должны быть рядом. Ты готов пожертвовать метрами ради хорошего адреса — твой главный ресурс время.",
+     formula:[["Тип","Квартира"],["Площадь","45–100 м²"],["Класс","Комфорт+, бизнес"],["Локация","Центр и районы рядом с ним"],["Приоритет","Инфраструктура и экономия времени"]],
+     guide:"Жить красиво. Жить в центре",guideSub:"Как выбрать квартиру под свой ритм и не переплатить за красивую картинку.",
+     kind:"квартира",area:"45–100"},
+  M:{n:2,title:"Практичный минималист",emoji:"📐",chip:"📐",
+     tag:"Зачем платить за метры, на которых будет просто стоять пыль?",
+     portrait:"Ты ценишь свободу, удобство и разумные расходы. Лучше потратить деньги на путешествия, чем на отопление пустой комнаты.",
+     formula:[["Тип","Компактная квартира"],["Площадь","28–50 м²"],["Класс","Комфорт"],["Локация","Район с развитой инфраструктурой"],["Приоритет","Функциональность"]],
+     guide:"Меньше метров. Больше возможностей",guideSub:"Как купить компактную квартиру, в которой не придётся жить компактно.",
+     kind:"квартира",area:"28–50"},
+  T:{n:3,title:"Амбассадор тишины",emoji:"🌿",chip:"🌿",
+     tag:"Твой любимый сосед — тот, о существовании которого ты не знаешь.",
+     portrait:"Ты любишь людей. Особенно на комфортном расстоянии. Твой дом — место, где заканчивается суета и начинается твоя жизнь.",
+     formula:[["Тип","Квартира"],["Площадь","40–75 м²"],["Класс","Комфорт, комфорт+"],["Локация","Тихий зелёный район"],["Приоритет","Спокойствие и приватность"]],
+     guide:"Тишина, которую хочется слушать",guideSub:"Как найти квартиру, в которой можно отдыхать от мира, не уезжая из города.",
+     kind:"квартира",area:"40–75"},
+  S:{n:4,title:"Семейный стратег",emoji:"🧸",chip:"🧸",
+     tag:"Счастье счастьем, а второй санузел ещё никому не помешал.",
+     portrait:"Ты знаешь, что большая кухня иногда важнее красивой спальни. Ты выбираешь жильё не только для себя, но и для тех, кого любишь.",
+     formula:[["Тип","Семейная квартира"],["Площадь","65–110 м²"],["Класс","Комфорт, комфорт+, бизнес"],["Локация","Сформированный семейный район"],["Приоритет","Пространство и инфраструктура"]],
+     guide:"Счастье любит пространство",guideSub:"Как выбрать квартиру, из которой семья не вырастет через два года.",
+     kind:"квартира",area:"65–110"},
+  E:{n:5,title:"Эстет с запросами",emoji:"🏛️",chip:"🏛️",
+     tag:"Ты даже подъезд оцениваешь как произведение искусства.",
+     portrait:"Для тебя важны архитектура, материалы, свет и окружение. И нет, тебе не всё равно, как выглядит дверная ручка.",
+     formula:[["Тип","Квартира в клубном доме"],["Площадь","70–150 м²"],["Класс","Бизнес, премиум"],["Локация","Престижная или приватная"],["Приоритет","Архитектура и качество"]],
+     guide:"Когда обычного недостаточно",guideSub:"Как отличить настоящую премиальную недвижимость от дорогой упаковки.",
+     kind:"квартира",area:"70–150"},
+  H:{n:6,title:"Сам себе хозяин",emoji:"🏡",chip:"🏡",
+     tag:"Хочешь собственный двор, но не вторую работу в виде огорода.",
+     portrait:"Своя дверь на улицу, парковка во дворе и никаких разрешений у соседей. Тебе нужен дом для жизни, а не жизнь для обслуживания дома.",
+     formula:[["Тип","Частный дом"],["Площадь","75–120 м²"],["Участок","3–6 соток"],["Локация","Город или ближайший пригород"],["Приоритет","Независимость и удобство"]],
+     guide:"Свой дом. Свои правила",guideSub:"Как купить частный дом и не превратить мечту о свободе во вторую работу.",
+     kind:"дом",area:"75–120"},
+  Z:{n:7,title:"Землевладелец в душе",emoji:"🌳",chip:"🌳",
+     tag:"Начинается всё с террасы, а заканчивается баней, бассейном и собственной коптильней.",
+     portrait:"Ты уже мысленно знаешь, где будет баня, мангальная зона и бассейн. Любимая фраза при выборе: «А здесь ещё можно достроить».",
+     formula:[["Тип","Просторный частный дом"],["Площадь","от 130 м²"],["Участок","от 6 соток"],["Локация","Частный сектор, коттеджный посёлок"],["Приоритет","Пространство и свобода"]],
+     guide:"Мечты не помещаются в квартиру",guideSub:"Как создать свою территорию счастья и не разориться на её содержании.",
+     kind:"дом",area:"от 130"}
+};
+const ORDER = ["G","M","T","S","E","H","Z"]; // порядок при равенстве баллов
+
+/* ===== Вопросы =====
+   p — баллы психотипам, c — критерии подбора для CRM */
+const Q = [
+ {t:"Твоё идеальное утро?",k:"утро",a:[
+  {x:"Кофе с видом на город.",e:"☕",p:{G:2,E:1},c:{loc:"центр"}},
+  {x:"Спать. И чтобы никто не сверлил.",e:"😴",p:{T:3,M:1},c:{privacy:"высокая"}},
+  {x:"Завтрак всей семьёй на большой кухне.",e:"🥞",p:{S:3,H:1},c:{family:"семья"}},
+  {x:"Выйти во двор в трусах. И иметь на это полное право.",e:"🩳",p:{H:3,Z:1},c:{kind:"дом"}}]},
+ {t:"Как далеко от дома должна быть кофейня?",k:"кофейня",a:[
+  {x:"Желательно прямо в моём доме.",e:"🏙️",p:{G:2,E:1},c:{loc:"центр"}},
+  {x:"Пять минут пешком.",e:"🚶",p:{M:3,T:1},c:{loc:"район с инфраструктурой"}},
+  {x:"Десять минут на машине? Легко!",e:"🚗",p:{H:2,S:1},c:{loc:"пригород"}},
+  {x:"У меня есть кофемашина. Отстаньте.",e:"🤖",p:{Z:2,T:1,H:1},c:{loc:"неважно"}}]},
+ {t:"Что бы ты сделал с лишними 20 м²?",k:"20м",a:[
+  {x:"Гардеробную. Вещи уже захватили власть.",e:"👗",p:{E:3},c:{}},
+  {x:"Личный кабинет. С дверью. И замком.",e:"🔐",p:{M:2,T:2},c:{privacy:"высокая"}},
+  {x:"Большую кухню-гостиную.",e:"🍽️",p:{S:3},c:{family:"семья"}},
+  {x:"Лучше дайте мне пару соток земли.",e:"🌱",p:{Z:2,H:2},c:{kind:"дом"}}]},
+ {t:"Твои идеальные соседи?",k:"соседи",a:[
+  {x:"Приличные и обеспеченные.",e:"🎩",p:{E:3,G:1},c:{cls:"бизнес+"}},
+  {x:"Приветливые, но ненавязчивые.",e:"🙂",p:{T:2,M:1},c:{privacy:"высокая"}},
+  {x:"Те, с кем дети могут дружить.",e:"🛝",p:{S:2,H:1},c:{family:"с детьми"}},
+  {x:"Какие ещё соседи?",e:"🤨",p:{Z:2,H:2},c:{kind:"дом"}}]},
+ {t:"Пятница. Какие планы?",k:"пятница",a:[
+  {x:"Красиво одеться и выйти в свет.",e:"🥂",p:{G:3,E:1},c:{loc:"центр"}},
+  {x:"Сериал, доставка, плед. Я недоступен.",e:"🍿",p:{T:3,M:1},c:{}},
+  {x:"Собрать друзей за большим столом.",e:"🎉",p:{S:2,E:1},c:{}},
+  {x:"Мангал, шашлык. Соседи пусть завидуют.",e:"🍖",p:{Z:2,H:2},c:{kind:"дом"}}]},
+ {t:"Кто будет жить с тобой?",k:"состав",a:[
+  {x:"Я и моя прекрасная личность.",e:"🪞",p:{M:2,G:2},c:{family:"один"}},
+  {x:"Моя вторая половинка.",e:"💞",p:{T:1,E:2},c:{family:"пара"}},
+  {x:"Семья, дети и миллион игрушек.",e:"🧸",p:{S:3},c:{family:"с детьми"}},
+  {x:"Семья, животные, гости. Почти небольшой колхоз.",e:"🐕",p:{Z:3,S:1},c:{family:"большая семья"}}]},
+ {t:"На что ты готов потратить лишний миллион при покупке?",k:"миллион",a:[
+  {x:"На престижный адрес. Люблю красивую жизнь.",e:"💎",p:{E:3,G:1},c:{cls:"бизнес+"}},
+  {x:"На ремонт. Не хочу жить с перфоратором.",e:"🛠️",p:{M:3},c:{}},
+  {x:"На дополнительную комнату. Лишней не будет.",e:"🚪",p:{S:2,H:1},c:{}},
+  {x:"На участок побольше. Баня сама себя не построит.",e:"🧖",p:{Z:3},c:{kind:"дом"}}]},
+ {t:"Что тебя бесит больше всего?",k:"бесит",a:[
+  {x:"Час добираться до центра.",e:"⏳",p:{G:3},c:{loc:"центр"}},
+  {x:"Слышать, как сосед чихает.",e:"🤧",p:{T:3},c:{privacy:"высокая"}},
+  {x:"Очередь в собственную ванную.",e:"🚿",p:{S:2},c:{}},
+  {x:"Искать парковку возле своего же дома.",e:"🅿️",p:{H:3},c:{kind:"дом"}}]},
+ {t:"Как у тебя обстоят дела с хозяйством?",k:"хозяйство",a:[
+  {x:"Для этого существуют специальные люди.",e:"🧑‍💼",p:{E:3,G:1},c:{care:"не готов"}},
+  {x:"Даже кактус у меня не выжил.",e:"🌵",p:{M:2,T:1},c:{care:"не готов"}},
+  {x:"Собрать шкаф? Вполне могу.",e:"🪛",p:{H:2,S:1},c:{care:"немного"}},
+  {x:"Газон, баня, теплица? Уже составляю план!",e:"🏕️",p:{Z:3},c:{care:"готов"}}]},
+ {t:"Выбирай. Цена у всех одинаковая.",k:"выбор",a:[
+  {x:"Шикарная квартира в центре.",e:"🌃",p:{G:2,E:2},c:{kind:"квартира"}},
+  {x:"Уютная квартира рядом с парком.",e:"🌳",p:{T:2,M:2},c:{kind:"квартира"}},
+  {x:"Компактный дом с террасой.",e:"🏡",p:{H:3},c:{kind:"дом"}},
+  {x:"Большой дом с участком. Гулять так гулять!",e:"🏰",p:{Z:3},c:{kind:"дом"}}]}
+];
+const BG = ["bg-a","bg-b","bg-c","bg-d"];
+
+const $ = id => document.getElementById(id);
+let answers = [];   // индексы 0..3
+let locked = false;
+let resultKey = null;
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active", s.id===id));
+  window.scrollTo({top:0,behavior:"instant" in window ? "instant" : "auto"});
+}
+
+/* ---- подсчёт ---- */
+function score(ans){
+  const s = Object.fromEntries(ORDER.map(k=>[k,0]));
+  ans.forEach((ai,qi)=>{ for(const [k,v] of Object.entries(Q[qi].a[ai].p)) s[k]+=v; });
+  let best = ORDER[0];
+  for(const k of ORDER) if(s[k]>s[best]) best=k;
+  return {key:best, scores:s};
+}
+function criteria(ans){
+  const c = {};
+  ans.forEach((ai,qi)=>{ const cc=Q[qi].a[ai].c; for(const k in cc){ (c[k] ||= []).push(cc[k]); } });
+  const pick = arr => { if(!arr) return ""; const m={}; arr.forEach(v=>m[v]=(m[v]||0)+1); return Object.entries(m).sort((a,b)=>b[1]-a[1])[0][0]; };
+  const t = TYPES[resultKey];
+  const homeVotes = (c.kind||[]).filter(v=>v==="дом").length;
+  return {
+    housing_type: t.kind,
+    house_votes: homeVotes,              // сколько раз тянуло к дому (из 10)
+    area_m2: t.area,
+    location: pick(c.loc),
+    family: (c.family||[]).slice(-1)[0] || "",
+    privacy: (c.privacy||[]).length>=2 ? "высокая" : "обычная",
+    class_hint: (c.cls||[]).length ? "бизнес+" : "",
+    household_care: pick(c.care)
+  };
+}
+
+/* ---- старт ---- */
+$("typeChips").innerHTML = ORDER.map((k,i)=> i<3
+  ? `<span class="chip"><i>${TYPES[k].chip}</i>${TYPES[k].title}</span>`
+  : `<span class="chip hidden-type"><i>🔒</i>Психотип №${TYPES[k].n}</span>`).join("");
+
+function start(){ answers=[]; locked=false; renderQ(); show("s-quiz"); }
+$("startBtn").onclick = start;
+$("againBtn").onclick = start;
+$("homeBtn").onclick = ()=>{ locked=false; show("s-start"); };
+
+/* ---- вопрос ---- */
+function renderQ(){
+  const i = answers.length, q = Q[i];
+  $("qNum").textContent = i+1;
+  $("bar").style.width = (i/10*100)+"%";
+  $("qTitle").textContent = q.t;
+  $("answers").innerHTML = q.a.map((a,j)=>`
+    <button class="answer" data-j="${j}">
+      <div class="pic ${BG[j]}"><span class="letter">${"АБВГ"[j]}</span><span class="em">${a.e}</span></div>
+      <div class="txt">${a.x}</div>
+    </button>`).join("");
+  $("answers").querySelectorAll(".answer").forEach(b=>b.onclick=()=>pick(+b.dataset.j,b));
+}
+function pick(j,btn){
+  if(locked) return; locked=true;
+  btn.classList.add("picked"); btn.querySelector(".letter").textContent="✓";
+  setTimeout(()=>{
+    answers.push(j); locked=false;
+    if(answers.length===10) showResult(); else renderQ();
+  },330);
+}
+$("backBtn").onclick = ()=>{
+  if(locked) return;
+  if(answers.length){ answers.pop(); renderQ(); } else show("s-start");
+};
+
+/* ---- результат ---- */
+function showResult(){
+  resultKey = score(answers).key;
+  const t = TYPES[resultKey];
+  $("rNum").textContent = `ПСИХОТИП ${t.n} ИЗ 7`;
+  $("rEmoji").textContent = t.emoji;
+  $("rTitle").textContent = t.title;
+  $("rTag").textContent = t.tag;
+  $("rPortrait").textContent = t.portrait;
+  $("rFormula").innerHTML = t.formula.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join("");
+  $("toast").textContent = "";
+  try{ history.replaceState(null,"","#"+resultKey); }catch(e){}
+  show("s-result");
+}
+$("shareBtn").onclick = async ()=>{
+  const t = TYPES[resultKey];
+  const url = location.href.split("#")[0];
+  const text = `Я — ${t.title}! «${t.tag}» А какой у тебя характер в квадратных метрах?`;
+  try{
+    if(navigator.share) await navigator.share({title:"Твой характер в квадратных метрах",text,url});
+    else { await navigator.clipboard.writeText(text+"\n"+url); $("toast").textContent="Результат и ссылка скопированы — вставь в сторис или чат"; }
+  }catch(e){ $("toast").textContent="Поделиться можно ссылкой на эту страницу"; }
+};
+
+/* ---- подарок ---- */
+function toGift(){
+  const t = TYPES[resultKey];
+  $("gNum").textContent = String(t.n).padStart(2,"0");
+  $("gEmoji").textContent = t.emoji;
+  $("gTitle").textContent = t.guide;
+  $("gSub").textContent = t.guideSub;
+  $("gType").textContent = t.title;
+  $("policyLink").href = QUIZ_CONFIG.POLICY_URL || "#";
+  show("s-gift");
+}
+$("toGiftBtn").onclick = toGift;
+$("toGiftBtn2").onclick = toGift;
+
+/* маска телефона +7 (XXX) XXX-XX-XX */
+const phone = $("fPhone");
+phone.addEventListener("input", ()=>{
+  let d = phone.value.replace(/\D/g,"");
+  if(d.startsWith("8")) d = "7"+d.slice(1);
+  if(!d.startsWith("7")) d = "7"+d;
+  d = d.slice(0,11);
+  const p = d.slice(1);
+  let out = "+7";
+  if(p.length) out += " ("+p.slice(0,3);
+  if(p.length>=3) out += ")";
+  if(p.length>3) out += " "+p.slice(3,6);
+  if(p.length>6) out += "-"+p.slice(6,8);
+  if(p.length>8) out += "-"+p.slice(8,10);
+  phone.value = out;
+});
+phone.addEventListener("focus", ()=>{ if(!phone.value) phone.value="+7 ("; });
+
+function utm(){
+  const u = new URLSearchParams(location.search), o={};
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{ if(u.get(k)) o[k]=u.get(k); });
+  o.referrer = document.referrer || "";
+  return o;
+}
+function leadId(){ return (Date.now().toString(36)+Math.random().toString(36).slice(2,7)).slice(-10); }
+
+$("leadForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name = $("fName").value.trim();
+  const digits = phone.value.replace(/\D/g,"");
+  $("fName").classList.toggle("bad", !name);
+  phone.classList.toggle("bad", digits.length!==11);
+  if(!name){ $("fErr").textContent="Как к тебе обращаться?"; return; }
+  if(digits.length!==11){ $("fErr").textContent="Проверь номер телефона — нужно 10 цифр после +7"; return; }
+  if(!$("fConsent").checked){ $("fErr").textContent="Нужно согласие на обработку данных, чтобы прислать гид"; return; }
+  $("fErr").textContent="";
+
+  const t = TYPES[resultKey], id = leadId();
+  const lead = {
+    lead_id: id,
+    created_at: new Date().toISOString(),
+    name, phone: "+"+digits,
+    result_key: resultKey,
+    result_title: t.title,
+    guide: t.guide,
+    scores: score(answers).scores,
+    answers: answers.map((ai,qi)=>({q:Q[qi].t, letter:"АБВГ"[ai], answer:Q[qi].a[ai].x})),
+    criteria: criteria(answers),
+    consent_pd: true,
+    consent_ads: $("fAds").checked,
+    source: utm()
+  };
+
+  const cfg = window.QUIZ_CONFIG || {};
+  const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Готовим гид…";
+  if(cfg.WEBHOOK_URL){
+    try{
+      await fetch(cfg.WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(lead),mode:"no-cors"});
+    }catch(err){ /* заявку не теряем: бот всё равно получит id и психотип */ }
+  }
+  btn.disabled = false; btn.textContent = "Забрать мой персональный гид";
+
+  // В ссылку бота — только психотип и id заявки. Телефон в ссылку не попадает.
+  const start = `${resultKey}_${id}`;
+  $("tName").textContent = name;
+  $("tGuide").textContent = t.guide;
+  if(cfg.BOT_USERNAME){
+    $("tgBtn").href = `https://t.me/${cfg.BOT_USERNAME}?start=${start}`;
+    $("demoNote").hidden = true;
+  } else {
+    $("tgBtn").href = "#";
+    $("tgBtn").onclick = ev=>{ if(!cfg.BOT_USERNAME){ ev.preventDefault(); } };
+    $("demoNote").hidden = false;
+  }
+  window.__lastLead = lead; // для проверки в консоли
+  show("s-thanks");
+});
+
+/* ---- открыть сразу результат по ссылке #G … #Z (для проверки) ---- */
+const h = location.hash.slice(1);
+if(TYPES[h]){ resultKey=h; answers=[]; }
+})();
+</script>
+</body>
+</html>
