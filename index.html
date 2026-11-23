@@ -108,8 +108,9 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .answer:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--shadow)}
 .answer:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .answer .pic{aspect-ratio:1/1;display:grid;place-items:center;position:relative;font-size:clamp(54px,7vw,76px)}
-.answer .pic .em{filter:drop-shadow(0 8px 14px rgba(15,31,61,.25));transition:transform .25s ease}
-.answer:hover .pic .em{transform:scale(1.08) rotate(-4deg)}
+.answer .pic{overflow:hidden}
+.answer .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.answer:hover .pic img{transform:scale(1.06)}
 .answer .letter{position:absolute;left:14px;top:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,253,248,.92);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:15px}
 .answer .txt{padding:16px 18px 20px;font-weight:600;color:var(--graphite);font-size:15.5px;line-height:1.35}
 .answer.picked{border-color:var(--gold);transform:scale(.97)}
@@ -123,9 +124,10 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 /* ---------- результат ---------- */
 .result{padding-top:40px;padding-bottom:70px}
 .result-card{background:var(--navy);color:var(--milk);border-radius:28px;overflow:hidden;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:var(--shadow)}
-.result-visual{background:radial-gradient(90% 80% at 50% 30%,var(--navy-3),var(--navy));display:grid;place-items:center;padding:36px;position:relative;min-height:340px}
-.result-visual .big{font-size:150px;filter:drop-shadow(0 20px 30px rgba(0,0,0,.4))}
-.result-visual .num{position:absolute;left:24px;top:22px;font-size:12px;letter-spacing:.18em;color:var(--gold-2);font-weight:700}
+.result-visual{background:var(--navy);position:relative;min-height:340px;overflow:hidden}
+.result-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.result-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,31,61,.55) 0%,rgba(15,31,61,0) 30%)}
+.result-visual .num{position:absolute;z-index:1;left:24px;top:22px;font-size:12px;letter-spacing:.18em;color:var(--gold-2);font-weight:700}
 .result-body{padding:40px 40px 36px}
 .result-body .intro{color:rgba(247,242,233,.7);font-size:14px;letter-spacing:.06em;margin:14px 0 4px}
 .result-body h1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(40px,5.5vw,58px);line-height:1;color:var(--gold-2)}
@@ -152,7 +154,7 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .gift-cover .series{font-size:11px;letter-spacing:.2em;color:var(--gold-2);font-weight:700}
 .gift-cover .gt{font-family:"Cormorant Garamond",serif;font-size:clamp(32px,4vw,44px);line-height:1.02;margin-top:auto;font-weight:600}
 .gift-cover .gs{font-size:14px;color:rgba(247,242,233,.75);margin-top:12px}
-.gift-cover .ge{font-size:96px;position:absolute;right:26px;top:44px;opacity:.95}
+.gift-cover .ge{position:absolute;right:28px;top:46px;width:132px;height:132px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
 .gift-cover .author{margin-top:22px;font-size:12px;letter-spacing:.08em;color:var(--gold-2)}
 .gift-text .eyebrow{color:var(--gold-deep)}
 .gift-text .eyebrow::before{background:var(--gold-deep)}
@@ -174,7 +176,7 @@ input.bad{border-color:#c0533f}
 
 /* ---------- спасибо ---------- */
 .thanks{padding-top:60px;padding-bottom:80px;text-align:center}
-.thanks .big{font-size:84px}
+.thanks .key{width:180px;height:180px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);box-shadow:var(--shadow)}
 .thanks h2{font-family:"Cormorant Garamond",serif;font-size:clamp(36px,5vw,52px);color:var(--navy);font-weight:600;line-height:1.05;margin:14px 0}
 .thanks p{max-width:34em;margin:0 auto 24px;font-size:17px}
 .demo{max-width:34em;margin:20px auto 0;font-size:13px;color:#8a5a12;background:#fbefd6;border:1px dashed var(--gold);border-radius:14px;padding:12px 16px}
@@ -185,10 +187,10 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
 @media (max-width:900px){
   .answers{grid-template-columns:repeat(2,1fr)}
   .result-card{grid-template-columns:1fr}
-  .result-visual{min-height:220px;padding:28px}
-  .result-visual .big{font-size:110px}
+  .result-visual{min-height:0;aspect-ratio:1/1}
   .gift-grid{grid-template-columns:1fr}
   .gift-cover{aspect-ratio:auto;min-height:300px}
+  .gift-cover .ge{position:static;width:96px;height:96px;margin:18px 0 22px}
 }
 @media (max-width:760px){
   .hero .wrap{grid-template-columns:1fr;padding-top:34px;padding-bottom:40px;gap:10px}
@@ -318,7 +320,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
     <div class="result-card">
       <div class="result-visual">
         <div class="num" id="rNum"></div>
-        <div class="big" id="rEmoji"></div>
+        <img id="rImg" alt="" width="600" height="600">
       </div>
       <div class="result-body">
         <div class="eyebrow">Кажется, мы тебя раскусили</div>
@@ -352,7 +354,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
       <div>
         <div class="gift-cover">
           <div class="series">ТВОЙ ИДЕАЛЬНЫЙ АДРЕС · <span id="gNum"></span></div>
-          <div class="ge" id="gEmoji"></div>
+          <img class="ge" id="gEmoji" alt="" width="132" height="132">
           <div class="gt" id="gTitle"></div>
           <div class="gs" id="gSub"></div>
           <div class="author">СОФИЯ ЛЮБИМОВА · ПЕРСОНАЛЬНЫЙ ГИД · 8 СТРАНИЦ</div>
@@ -390,7 +392,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
 <!-- ================= СПАСИБО ================= -->
 <section class="screen" id="s-thanks">
   <div class="wrap thanks">
-    <div class="big">🎁</div>
+    <img class="key" src="key.jpg" alt="Ключ от дома" width="600" height="600">
     <h2><span id="tName"></span>, твой гид уже ждёт!</h2>
     <p>Открой Telegram — бот сразу пришлёт гид «<b id="tGuide"></b>». Отвечать на вопросы заново не придётся.</p>
     <a class="btn btn-gold" id="tgBtn" href="#" target="_blank" rel="noopener">Открыть гид в Telegram →</a>
@@ -563,10 +565,12 @@ function renderQ(){
   $("qTitle").textContent = q.t;
   $("answers").innerHTML = q.a.map((a,j)=>`
     <button class="answer" data-j="${j}">
-      <div class="pic ${BG[j]}"><span class="letter">${"АБВГ"[j]}</span><span class="em">${a.e}</span></div>
+      <div class="pic ${BG[j]}"><img src="a${i+1}-${j+1}.jpg" alt="" width="600" height="600" loading="eager" decoding="async"><span class="letter">${"АБВГ"[j]}</span></div>
       <div class="txt">${a.x}</div>
     </button>`).join("");
   $("answers").querySelectorAll(".answer").forEach(b=>b.onclick=()=>pick(+b.dataset.j,b));
+  if(i<9) for(let j=1;j<=4;j++){ const p=new Image(); p.src=`a${i+2}-${j}.jpg`; }
+  if(i>=7) ORDER.forEach(k=>{ const p=new Image(); p.src=`type-${k}.jpg`; });
 }
 function pick(j,btn){
   if(locked) return; locked=true;
@@ -586,7 +590,7 @@ function showResult(){
   resultKey = score(answers).key;
   const t = TYPES[resultKey];
   $("rNum").textContent = `ПСИХОТИП ${t.n} ИЗ 7`;
-  $("rEmoji").textContent = t.emoji;
+  $("rImg").src = `type-${resultKey}.jpg`; $("rImg").alt = t.title;
   $("rTitle").textContent = t.title;
   $("rTag").textContent = t.tag;
   $("rPortrait").textContent = t.portrait;
@@ -609,7 +613,7 @@ $("shareBtn").onclick = async ()=>{
 function toGift(){
   const t = TYPES[resultKey];
   $("gNum").textContent = String(t.n).padStart(2,"0");
-  $("gEmoji").textContent = t.emoji;
+  $("gEmoji").src = `type-${resultKey}.jpg`;
   $("gTitle").textContent = t.guide;
   $("gSub").textContent = t.guideSub;
   $("gType").textContent = t.title;
