@@ -330,7 +330,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
         <p class="portrait" id="rPortrait"></p>
         <dl class="formula" id="rFormula"></dl>
         <div class="result-actions">
-          <button class="btn btn-gold" id="toGiftBtn">Забрать персональный гид →</button>
+          <button class="btn btn-gold" id="toGiftBtn">Забрать персональный гайд →</button>
           <button class="btn btn-ghost" id="shareBtn">Поделиться</button>
         </div>
         <div class="toast" id="toast"></div>
@@ -357,13 +357,13 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
           <img class="ge" id="gEmoji" alt="" width="132" height="132">
           <div class="gt" id="gTitle"></div>
           <div class="gs" id="gSub"></div>
-          <div class="author">СОФИЯ ЛЮБИМОВА · ПЕРСОНАЛЬНЫЙ ГИД · 8 СТРАНИЦ</div>
+          <div class="author">СОФИЯ ЛЮБИМОВА · ПЕРСОНАЛЬНЫЙ ГАЙД · 8 СТРАНИЦ</div>
         </div>
       </div>
       <div class="gift-text">
         <div class="eyebrow">Твой персональный подарок</div>
         <h2>С характером разобрались. Теперь главное — не&nbsp;купить что попало.</h2>
-        <p>Мы подготовили гид по недвижимости для психотипа «<b id="gType"></b>» — с учётом твоего характера и образа жизни.</p>
+        <p>Мы подготовили гайд по недвижимости для психотипа «<b id="gType"></b>» — с учётом твоего характера и образа жизни.</p>
         <ul class="inside">
           <li>Какая недвижимость подходит именно тебе</li>
           <li>За что действительно стоит платить</li>
@@ -378,11 +378,11 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
           <label class="f">Номер телефона
             <input type="tel" id="fPhone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" inputmode="tel">
           </label>
-          <label class="check"><input type="checkbox" id="fConsent"> <span>Согласен(на) на обработку персональных данных для получения гида. <a id="policyLink" href="#" target="_blank" rel="noopener">Политика</a></span></label>
+          <label class="check"><input type="checkbox" id="fConsent"> <span>Согласен(на) на обработку персональных данных для получения гайда. <a id="policyLink" href="#" target="_blank" rel="noopener">Политика</a></span></label>
           <label class="check"><input type="checkbox" id="fAds"> <span>Хочу получать полезные материалы и предложения. От рассылки можно отказаться в любой момент.</span></label>
           <div class="err" id="fErr" role="alert"></div>
-          <button class="btn btn-gold" type="submit" id="submitBtn">Забрать мой персональный гид</button>
-          <div class="signature">Гид придёт в Telegram бесплатно · София Любимова · Любимова Недвижимость</div>
+          <button class="btn btn-gold" type="submit" id="submitBtn">Забрать мой персональный гайд</button>
+          <div class="signature">Гайд придёт в Telegram бесплатно · София Любимова · Любимова Недвижимость</div>
         </form>
       </div>
     </div>
@@ -393,9 +393,9 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
 <section class="screen" id="s-thanks">
   <div class="wrap thanks">
     <img class="key" src="key.jpg" alt="Ключ от дома" width="600" height="600">
-    <h2><span id="tName"></span>, твой гид уже ждёт!</h2>
-    <p>Открой Telegram — бот сразу пришлёт гид «<b id="tGuide"></b>». Отвечать на вопросы заново не придётся.</p>
-    <a class="btn btn-gold" id="tgBtn" href="#" target="_blank" rel="noopener">Открыть гид в Telegram →</a>
+    <h2><span id="tName"></span>, твой гайд уже ждёт!</h2>
+    <p>Открой Telegram — бот сразу пришлёт гайд «<b id="tGuide"></b>». Отвечать на вопросы заново не придётся.</p>
+    <a class="btn btn-gold" id="tgBtn" href="#" target="_blank" rel="noopener">Открыть гайд в Telegram →</a>
     <div class="demo" id="demoNote" hidden>Демо-режим: бот и CRM ещё не подключены. Впиши <b>BOT_USERNAME</b> и <b>WEBHOOK_URL</b> в начале файла — и заявка начнёт уходить по-настоящему.</div>
   </div>
 </section>
@@ -657,7 +657,7 @@ $("leadForm").addEventListener("submit", async e=>{
   phone.classList.toggle("bad", digits.length!==11);
   if(!name){ $("fErr").textContent="Как к тебе обращаться?"; return; }
   if(digits.length!==11){ $("fErr").textContent="Проверь номер телефона — нужно 10 цифр после +7"; return; }
-  if(!$("fConsent").checked){ $("fErr").textContent="Нужно согласие на обработку данных, чтобы прислать гид"; return; }
+  if(!$("fConsent").checked){ $("fErr").textContent="Нужно согласие на обработку данных, чтобы прислать гайд"; return; }
   $("fErr").textContent="";
 
   const t = TYPES[resultKey], id = leadId();
@@ -677,13 +677,13 @@ $("leadForm").addEventListener("submit", async e=>{
   };
 
   const cfg = window.QUIZ_CONFIG || {};
-  const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Готовим гид…";
+  const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Готовим гайд…";
   if(cfg.WEBHOOK_URL){
     try{
       await fetch(cfg.WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(lead),mode:"no-cors"});
     }catch(err){ /* заявку не теряем: бот всё равно получит id и психотип */ }
   }
-  btn.disabled = false; btn.textContent = "Забрать мой персональный гид";
+  btn.disabled = false; btn.textContent = "Забрать мой персональный гайд";
 
   // В ссылку бота — только психотип и id заявки. Телефон в ссылку не попадает.
   const start = `${resultKey}_${id}`;

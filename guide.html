@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Твой идеальный адрес — персональный гид</title>
+<title>Твой идеальный адрес — персональный гайд</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,9 +135,9 @@ const key = (new URLSearchParams(location.search).get("t") || location.hash.slic
 const g = G[key];
 const app = document.getElementById("app");
 if(!g){
-  app.innerHTML = `<div class="err"><h2>Гид не найден</h2><p style="margin-top:10px">Пройди тест — и мы пришлём твой персональный гид.</p><a class="btn" href="./">Пройти тест</a></div>`;
+  app.innerHTML = `<div class="err"><h2>Гайд не найден</h2><p style="margin-top:10px">Пройди тест — и мы пришлём твой персональный гайд.</p><a class="btn" href="./">Пройти тест</a></div>`;
 } else {
-  document.title = `${g.title} — гид для психотипа «${g.type}»`;
+  document.title = `${g.title} — гайд для психотипа «${g.type}»`;
   const sec = (n, title, body) => `<section class="page"><div class="wrap"><div class="num">${n}</div><h2>${title}</h2>${body}</div></section>`;
   app.innerHTML = `
   <header class="cover"><div class="wrap">
