@@ -64,7 +64,8 @@ ol.mistakes li::before{content:counter(m);flex:none;width:32px;height:32px;borde
 .final .geo{margin-top:6px;font-size:12px;letter-spacing:.1em;color:var(--gold-2)}
 .err{padding:80px 16px;text-align:center}
 @media (max-width:520px){td{display:block;width:100%!important;border:0;padding:4px 16px}td:first-child{padding-top:14px}tr{display:block;border-bottom:1px solid var(--line);padding-bottom:10px}.btn{width:100%}}
-@media print{.final .btn{display:none}section.page{break-inside:avoid}}
+@page{size:120mm 213mm;margin:0}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{background:var(--milk)}section.page,.cover,.final{break-inside:avoid}.cover,.final{min-height:213mm;display:flex;align-items:center}.cover .wrap,.final .wrap{width:100%}.final{break-before:page;padding:22px 0;min-height:0;height:213mm;overflow:hidden}.final h2{font-size:26px;margin-bottom:10px}.final p{font-size:13.5px;margin-bottom:8px}.final .qs{font-size:17px;margin:10px auto}.final .word{font-size:30px;padding:2px 14px}.final .btn{margin-top:10px;padding:12px 22px;font-size:14px}.final .who{margin-top:14px;font-size:13px}.check-head .counter,.bar{display:none}}
 </style>
 </head>
 <body>
